@@ -43,34 +43,30 @@ void generate_response(void) {
     response[0] = 0x33;
     break;
   default:
-    response[1] = 0x88;
-    response[0] = 0x88;
+    response[1] = 0x77;
+    response[0] = 0x77;
     break;
   }
 }
 void ISR(void) {
-
   // Start
   if (I2C_FLAG & I2C_START_FLAG) {
     ptr_command = (uint8_t *)command;
     ptr_response = (uint8_t *)response;
     BIT_CLEAR(I2C_FLAG, I2C_START_FLAG);
   }
-
   // RX
   if (I2C_FLAG & I2C_RX_FLAG) {
     *ptr_cmd_buffer = I2C_RX_BUFFER;
     *ptr_command++ = *ptr_cmd_buffer++;
     cmd_counter++;
   }
-
   // TX
   if (I2C_FLAG & I2C_TX_FLAG) {
     *ptr_rsp_buffer = *ptr_response++;
     I2C_TX_BUFFER = *ptr_rsp_buffer++;
     rsp_counter++;
   }
-
   // Stop
   if (I2C_FLAG & I2C_STOP_FLAG) {
     BIT_CLEAR(I2C_FLAG, I2C_STOP_FLAG);
