@@ -8,7 +8,7 @@
 
 // General Macros
 #define PERIOD 157 // Direct conversion to msp430f5529 to msp430fr6989
-#define MAX_CMD 10
+#define MAX_CMD 100
 
 // I2C definitions
 #define I2C_FLAG UCB1IFG
@@ -19,15 +19,58 @@
 #define I2C_RX_BUFFER UCB1RXBUF_L
 #define I2C_TX_BUFFER UCB1TXBUF_L
 
-// Response types for debugging
-#define RESPONSE_1 1
-#define RESPONSE_2 2
-#define RESPONSE_3 3
-#define DEFAULT_RESPONSE 4
+// Commands
+#define RESET 0xAA
+#define ARM 0xAD
+#define DISARM 0xAC
+#define DEPLOY_ANT_1 0xA1
+#define DEPLOY_ANT_2 0xA2
+#define DEPLOY_ANT_3 0xA3
+#define DEPLOY_ANT_4 0xA4
+#define DEPLOY_SEQUENCIAL 0xA5
+#define DEPLOY_ANT_1_OVERRIDE 0xBA
+#define DEPLOY_ANT_2_OVERRIDE 0xBB
+#define DEPLOY_ANT_3_OVERRIDE 0xBC
+#define DEPLOY_ANT_4_OVERRIDE 0xBD
+#define DEPLOY_CANCEL 0xA9
+#define MEASURE_TEMPERATURE 0xC0
+#define REPORT_DEPLOY_COUNTER_1 0xB0
+#define REPORT_DEPLOY_COUNTER_2 0xB1
+#define REPORT_DEPLOY_COUNTER_3 0xB2
+#define REPORT_DEPLOY_COUNTER_4 0xB3
+#define REPORT_DEPLOY_TIMER_1 0xB4
+#define REPORT_DEPLOY_TIMER_2 0xB5
+#define REPORT_DEPLOY_TIMER_3 0xB6
+#define REPORT_DEPLOY_TIMER_4 0xB7
+#define REPORT_DEPLOY_STATUS 0xC3
+
+// Responses
+#define RES_RESET 0xAA
+#define RES_ARM 0xAD
+#define RES_DISARM 0xAC
+#define RES_DEPLOY_ANT_1 0xA1
+#define RES_DEPLOY_ANT_2 0xA2
+#define RES_DEPLOY_ANT_3 0xA3
+#define RES_DEPLOY_ANT_4 0xA4
+#define RES_DEPLOY_SEQUENCIAL 0xA5
+#define RES_DEPLOY_ANT_1_OVERRIDE 0xBA
+#define RES_DEPLOY_ANT_2_OVERRIDE 0xBB
+#define RES_DEPLOY_ANT_3_OVERRIDE 0xBC
+#define RES_DEPLOY_ANT_4_OVERRIDE 0xBD
+#define RES_DEPLOY_CANCEL 0xA9
+#define RES_MEASURE_TEMPERATURE 0xC0
+#define RES_REPORT_DEPLOY_COUNTER_1 0xB0
+#define RES_REPORT_DEPLOY_COUNTER_2 0xB1
+#define RES_REPORT_DEPLOY_COUNTER_3 0xB2
+#define RES_REPORT_DEPLOY_COUNTER_4 0xB3
+#define RES_REPORT_DEPLOY_TIMER_1 0xB4
+#define RES_REPORT_DEPLOY_TIMER_2 0xB5
+#define RES_REPORT_DEPLOY_TIMER_3 0xB6
+#define RES_REPORT_DEPLOY_TIMER_4 0xB7
+#define RES_REPORT_DEPLOY_STATUS 0xC3
 
 // task functions
 void change_state(void);
-void generate_response(void);
 void ISR(void);
 void test_run(void);
 

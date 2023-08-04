@@ -10,42 +10,112 @@ uint8_t response[2];   // The response that will be send when requested from a
 uint8_t command[2];    // store temporary commands
 uint8_t command_bfr[MAX_CMD];  // Store the commands received from I2C
 uint8_t responde_bfr[MAX_CMD]; // Store the responses transmitted to I2C
-uint8_t *ptr_cmd_buffer = (uint8_t *)command_bfr; // Used for store last commands
-uint8_t *ptr_rsp_buffer = (uint8_t *)responde_bfr; // Used for store last commands
+uint8_t *ptr_cmd_buffer =
+    (uint8_t *)command_bfr; // Used for store last commands
+uint8_t *ptr_rsp_buffer =
+    (uint8_t *)responde_bfr; // Used for store last commands
 uint8_t cmd_counter = 0;     // Used to track number of commands
 uint8_t rsp_counter = 0;     // Used to track number of responses
 uint32_t timer = 0;          // Keep track of time
 uint8_t state;               // Used for generating different responses
 
-void change_state(void) {
-  if ((timer % 2) == 0) {
-    state = RESPONSE_1;
-  } else if ((timer % 3) == 0) {
-    state = RESPONSE_2;
-  } else if ((timer % 5) == 0) {
-    state = RESPONSE_3;
-  } else {
-    state = DEFAULT_RESPONSE;
-  }
-}
-void generate_response(void) {
-  switch (state) {
-  case RESPONSE_1:
-    response[1] = 0x11;
-    response[0] = 0x11;
+void command_read(void) {
+  switch (command[0]) {
+  case ARM:
+    response[0] = RES_ARM;
+    response[1] = RES_ARM;
     break;
-  case RESPONSE_2:
-    response[1] = 0x22;
-    response[0] = 0x22;
+  case RESET:
+    response[0] = RES_RESET;
+    response[1] = RES_RESET;
     break;
-  case RESPONSE_3:
-    response[1] = 0x33;
-    response[0] = 0x33;
+  case DISARM:
+    response[0] = RES_DISARM;
+    response[1] = RES_DISARM;
+    break;
+  case DEPLOY_ANT_1:
+    response[0] = RES_DEPLOY_ANT_1;
+    response[1] = RES_DEPLOY_ANT_1;
+    break;
+  case DEPLOY_ANT_2:
+    response[0] = RES_DEPLOY_ANT_2;
+    response[1] = RES_DEPLOY_ANT_2;
+    break;
+  case DEPLOY_ANT_3:
+    response[0] = RES_DEPLOY_ANT_3;
+    response[1] = RES_DEPLOY_ANT_3;
+    break;
+  case DEPLOY_ANT_4:
+    response[0] = RES_DEPLOY_ANT_4;
+    response[1] = RES_DEPLOY_ANT_4;
+    break;
+  case DEPLOY_SEQUENCIAL:
+    response[0] = RES_DEPLOY_SEQUENCIAL;
+    response[1] = RES_DEPLOY_SEQUENCIAL;
+    break;
+  case DEPLOY_ANT_1_OVERRIDE:
+    response[0] = RES_DEPLOY_ANT_1_OVERRIDE;
+    response[1] = RES_DEPLOY_ANT_1_OVERRIDE;
+    break;
+  case DEPLOY_ANT_2_OVERRIDE:
+    response[0] = RES_DEPLOY_ANT_2_OVERRIDE;
+    response[1] = RES_DEPLOY_ANT_2_OVERRIDE;
+    break;
+  case DEPLOY_ANT_3_OVERRIDE:
+    response[0] = RES_DEPLOY_ANT_3_OVERRIDE;
+    response[1] = RES_DEPLOY_ANT_3_OVERRIDE;
+    break;
+  case DEPLOY_ANT_4_OVERRIDE:
+    response[0] = RES_DEPLOY_ANT_4_OVERRIDE;
+    response[1] = RES_DEPLOY_ANT_4_OVERRIDE;
+    break;
+  case DEPLOY_CANCEL:
+    response[0] = RES_DEPLOY_CANCEL;
+    response[1] = RES_DEPLOY_CANCEL;
+    break;
+  case MEASURE_TEMPERATURE:
+    response[0] = RES_MEASURE_TEMPERATURE;
+    response[1] = RES_MEASURE_TEMPERATURE;
+    break;
+  case REPORT_DEPLOY_TIMER_1:
+    response[0] = RES_REPORT_DEPLOY_TIMER_1;
+    response[1] = RES_REPORT_DEPLOY_TIMER_1;
+    break;
+  case REPORT_DEPLOY_TIMER_2:
+    response[0] = RES_REPORT_DEPLOY_TIMER_2;
+    response[1] = RES_REPORT_DEPLOY_TIMER_2;
+    break;
+  case REPORT_DEPLOY_TIMER_3:
+    response[0] = RES_REPORT_DEPLOY_TIMER_3;
+    response[1] = RES_REPORT_DEPLOY_TIMER_3;
+    break;
+  case REPORT_DEPLOY_TIMER_4:
+    response[0] = RES_REPORT_DEPLOY_TIMER_4;
+    response[1] = RES_REPORT_DEPLOY_TIMER_4;
+    break;
+  case REPORT_DEPLOY_COUNTER_1:
+    response[0] = RES_REPORT_DEPLOY_COUNTER_1;
+    response[1] = RES_REPORT_DEPLOY_COUNTER_1;
+    break;
+  case REPORT_DEPLOY_COUNTER_2:
+    response[0] = RES_REPORT_DEPLOY_COUNTER_2;
+    response[1] = RES_REPORT_DEPLOY_COUNTER_2;
+    break;
+  case REPORT_DEPLOY_COUNTER_3:
+    response[0] = RES_REPORT_DEPLOY_COUNTER_3;
+    response[1] = RES_REPORT_DEPLOY_COUNTER_3;
+    break;
+  case REPORT_DEPLOY_COUNTER_4:
+    response[0] = RES_REPORT_DEPLOY_COUNTER_4;
+    response[1] = RES_REPORT_DEPLOY_COUNTER_4;
+    break;
+  case REPORT_DEPLOY_STATUS:
+    response[0] = RES_REPORT_DEPLOY_STATUS;
+    response[1] = RES_REPORT_DEPLOY_STATUS;
     break;
   default:
-    response[1] = 0x77;
-    response[0] = 0x77;
-    break;
+    response[0] = 0x88;
+    response[1] = 0x88;
   }
 }
 void ISR(void) {
@@ -73,8 +143,7 @@ void ISR(void) {
     response[0] = 0x88;
     response[1] = 0x88;
   }
-  change_state();
-  generate_response();
+  command_read();
 }
 
 void test_run(void) {
