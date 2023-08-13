@@ -15,8 +15,6 @@ void i2c_setup(void) {
   BIT_SET(I2C_CONTROL_0, I2C_SW_RESET);   // Enable SW reset.
   BIT_SET(I2C_CONTROL_0, I2C_SLAVE_MODE); // I2C Slave.
   BIT_SET(I2C_CONTROL_0, I2C_SYNC_MODE);  // Synchronous mode.
-  BIT_SET(I2C_OWN_ADDRESS,
-          ADDRESS0_ENABLE); // Enable the adress for the first eUSCI adress
   BIT_SET(I2C_OWN_ADDRESS, SLAVE_ADDRESS_A);
   BIT_CLEAR(I2C_CONTROL_0, I2C_SW_RESET); // Clear SW reset, resume operation.
 
