@@ -9,6 +9,7 @@
 // General Macros
 #define PERIOD 157 // Direct conversion to msp430f5529 to msp430fr6989
 #define MAX_CMD 100
+#define ECHO 1
 
 // I2C definitions
 #define I2C_FLAG UCB1IFG
@@ -70,8 +71,9 @@
 #define RES_REPORT_DEPLOY_STATUS 0xC3
 
 // task functions
-void change_state(void);
+void sequencial(void);
 void ISR(void);
 void test_run(void);
+void command_read(void);
 
 #endif // !TEST_H_

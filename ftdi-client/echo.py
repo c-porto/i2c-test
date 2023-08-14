@@ -3,6 +3,7 @@ from time import sleep
 
 commands: list[bytes] = [
     b"\xAA",
+    b"\xAC",
     b"\xAD",
     b"\xA1",
     b"\xA2",
@@ -31,6 +32,8 @@ ctrl = i2c.I2cController()
 ctrl.configure("ftdi:232h")
 
 port = ctrl.get_port(0x31)
+
+print("Echo...")
 
 for cmd in commands:
     print(f"Data transmitted from master via i2c: {cmd}")
