@@ -165,18 +165,25 @@ command_read(void) {
     response[0] = 0x88;
     response[1] = 0x88;
     deploy_counter_1++;
+    deploy_timer_1++;
     break;
   case DEPLOY_ANT_2:
     response[0] = 0x88;
     response[1] = 0x88;
+    deploy_counter_2++;
+    deploy_timer_2++;
     break;
   case DEPLOY_ANT_3:
     response[0] = 0x88;
     response[1] = 0x88;
+    deploy_counter_3++;
+    deploy_timer_3++;
     break;
   case DEPLOY_ANT_4:
     response[0] = 0x88;
     response[1] = 0x88;
+    deploy_counter_4++;
+    deploy_timer_4++;
     break;
   case DEPLOY_SEQUENCIAL:
     response[0] = 0x88;
@@ -187,21 +194,25 @@ command_read(void) {
     response[0] = 0x88;
     response[1] = 0x88;
     deploy_counter_1++;
+    deploy_timer_1++;
     break;
   case DEPLOY_ANT_2_OVERRIDE:
     response[0] = 0x88;
     response[1] = 0x88;
     deploy_counter_2++;
+    deploy_timer_2++;
     break;
   case DEPLOY_ANT_3_OVERRIDE:
     response[0] = 0x88;
     response[1] = 0x88;
     deploy_counter_3++;
+    deploy_timer_3++;
     break;
   case DEPLOY_ANT_4_OVERRIDE:
     response[0] = 0x88;
     response[1] = 0x88;
-    teploy_counter_4++;
+    deploy_counter_4++;
+    deploy_timer_4++;
     break;
   case DEPLOY_CANCEL:
     response[0] = 0x88;
