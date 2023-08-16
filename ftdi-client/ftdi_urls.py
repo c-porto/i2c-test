@@ -21,34 +21,45 @@ def main():
     debug = False
     try:
         argparser = ArgumentParser(description=modules[__name__].__doc__)
-        argparser.add_argument('-P', '--vidpid', action='append',
-                               help='specify a custom VID:PID device ID, '
-                                    'may be repeated')
-        argparser.add_argument('-V', '--virtual', type=FileType('r'),
-                               help='use a virtual device, specified as YaML')
-        argparser.add_argument('-v', '--verbose', action='count', default=0,
-                               help='increase verbosity')
-        argparser.add_argument('-d', '--debug', action='store_true',
-                               help='enable debug mode')
+        argparser.add_argument(
+            "-P",
+            "--vidpid",
+            action="append",
+            help="specify a custom VID:PID device ID, " "may be repeated",
+        )
+        argparser.add_argument(
+            "-V",
+            "--virtual",
+            type=FileType("r"),
+            help="use a virtual device, specified as YaML",
+        )
+        argparser.add_argument(
+            "-v", "--verbose", action="count", default=0, help="increase verbosity"
+        )
+        argparser.add_argument(
+            "-d", "--debug", action="store_true", help="enable debug mode"
+        )
         args = argparser.parse_args()
         debug = args.debug
 
         loglevel = max(DEBUG, ERROR - (10 * args.verbose))
         loglevel = min(ERROR, loglevel)
         if debug:
-            formatter = Formatter('%(asctime)s.%(msecs)03d %(name)-20s '
-                                  '%(message)s', '%H:%M:%S')
+            formatter = Formatter(
+                "%(asctime)s.%(msecs)03d %(name)-20s " "%(message)s", "%H:%M:%S"
+            )
         else:
-            formatter = Formatter('%(message)s')
+            formatter = Formatter("%(message)s")
         FtdiLogger.set_formatter(formatter)
         FtdiLogger.set_level(loglevel)
         FtdiLogger.log.addHandler(StreamHandler(stderr))
 
         if args.virtual:
-            #pylint: disable-msg=import-outside-toplevel
+            # pylint: disable-msg=import-outside-toplevel
             from pyftdi.usbtools import UsbTools
+
             # Force PyUSB to use PyFtdi test framework for USB backends
-            UsbTools.BACKENDS = ('pyftdi.tests.backend.usbvirt', )
+            UsbTools.BACKENDS = ("pyftdi.tests.backend.usbvirt",)
             # Ensure the virtual backend can be found and is loaded
             backend = UsbTools.find_backend()
             loader = backend.create_loader()()
@@ -62,7 +73,7 @@ def main():
         Ftdi.show_devices()
 
     except (ImportError, IOError, NotImplementedError, ValueError) as exc:
-        print('\nError: %s' % exc, file=stderr)
+        print("\nError: %s" % exc, file=stderr)
         if debug:
             print(format_exc(chain=False), file=stderr)
         exit(1)
@@ -70,5 +81,5 @@ def main():
         exit(2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

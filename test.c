@@ -24,8 +24,7 @@ uint32_t deploy_timer_1, deploy_timer_2, deploy_timer_3, deploy_timer_4;
 uint8_t deploy_counter_1, deploy_counter_2, deploy_counter_3, deploy_counter_4;
 
 #if defined(ECHO) && (ECHO == 1)
-void
-command_read(void) {
+void command_read(void) {
   switch (command[0]) {
   case ARM:
     response[0] = RES_ARM;
@@ -125,8 +124,7 @@ command_read(void) {
   }
 }
 #endif /* ECHO MODE */
-void
-sequencial(void) {
+void sequencial(void) {
   switch (sq_counter) {
   case 0:
     deploy_counter_1++;
@@ -146,81 +144,57 @@ sequencial(void) {
   }
 }
 #if defined(ECHO) && (ECHO == 0)
-void
-command_read(void) {
+void command_read(void) {
   switch (command[0]) {
   case ARM:
-    response[0] = 0x88;
-    response[1] = 0x88;
+    // do nothing
     break;
   case RESET:
-    response[0] = 0x88;
-    response[1] = 0x88;
+    // do nothing
     break;
   case DISARM:
-    response[0] = 0x88;
-    response[1] = 0x88;
+    // do nothing
     break;
   case DEPLOY_ANT_1:
-    response[0] = 0x88;
-    response[1] = 0x88;
     deploy_counter_1++;
     deploy_timer_1++;
     break;
   case DEPLOY_ANT_2:
-    response[0] = 0x88;
-    response[1] = 0x88;
     deploy_counter_2++;
     deploy_timer_2++;
     break;
   case DEPLOY_ANT_3:
-    response[0] = 0x88;
-    response[1] = 0x88;
     deploy_counter_3++;
     deploy_timer_3++;
     break;
   case DEPLOY_ANT_4:
-    response[0] = 0x88;
-    response[1] = 0x88;
     deploy_counter_4++;
     deploy_timer_4++;
     break;
   case DEPLOY_SEQUENCIAL:
-    response[0] = 0x88;
-    response[1] = 0x88;
     sequencial();
     break;
   case DEPLOY_ANT_1_OVERRIDE:
-    response[0] = 0x88;
-    response[1] = 0x88;
     deploy_counter_1++;
     deploy_timer_1++;
     break;
   case DEPLOY_ANT_2_OVERRIDE:
-    response[0] = 0x88;
-    response[1] = 0x88;
     deploy_counter_2++;
     deploy_timer_2++;
     break;
   case DEPLOY_ANT_3_OVERRIDE:
-    response[0] = 0x88;
-    response[1] = 0x88;
     deploy_counter_3++;
     deploy_timer_3++;
     break;
   case DEPLOY_ANT_4_OVERRIDE:
-    response[0] = 0x88;
-    response[1] = 0x88;
     deploy_counter_4++;
     deploy_timer_4++;
     break;
   case DEPLOY_CANCEL:
-    response[0] = 0x88;
-    response[1] = 0x88;
     break;
   case MEASURE_TEMPERATURE:
-    response[0] = RES_MEASURE_TEMPERATURE;
-    response[1] = RES_MEASURE_TEMPERATURE;
+    response[0] = 0xFF;
+    response[1] = 0x03;
     break;
   case REPORT_DEPLOY_TIMER_1:
     deploy_timer_1 = deploy_timer_1;
@@ -244,19 +218,19 @@ command_read(void) {
     break;
   case REPORT_DEPLOY_COUNTER_1:
     response[0] = deploy_counter_1;
-    response[1] = deploy_counter_1;
+    response[1] = 0x00;
     break;
   case REPORT_DEPLOY_COUNTER_2:
     response[0] = deploy_counter_2;
-    response[1] = deploy_counter_2;
+    response[1] = 0x00;
     break;
   case REPORT_DEPLOY_COUNTER_3:
     response[0] = deploy_counter_3;
-    response[1] = deploy_counter_3;
+    response[1] = 0x00;
     break;
   case REPORT_DEPLOY_COUNTER_4:
     response[0] = deploy_counter_4;
-    response[1] = deploy_counter_4;
+    response[1] = 0x00;
     break;
   case REPORT_DEPLOY_STATUS:
     response[0] = 0xFF;
@@ -269,8 +243,7 @@ command_read(void) {
 }
 #endif /* SIMULATED BEHAVIOR MODE */
 
-void
-ISR(void) {
+void ISR(void) {
   // Start
   if (I2C_FLAG & I2C_START_FLAG) {
     ptr_command = (uint8_t *)command;
@@ -298,9 +271,8 @@ ISR(void) {
   command_read();
 }
 
-void
-test_run(void) {
-  uint32_t time = 0; // Keep track of time
+void test_run(void) {
+
   while (1) {
     if (cmd_counter >= MAX_CMD) { // Needed to avoid going out of buffer length
       ptr_cmd_buffer = (uint8_t *)command_bfr; // or &command_bfr[0];
@@ -312,6 +284,5 @@ test_run(void) {
     }
     ISR();
     __delay_cycles(PERIOD);
-    ++time;
   }
 }
