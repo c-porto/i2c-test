@@ -65,28 +65,33 @@ ctrl.configure("ftdi:232h")
 
 port = ctrl.get_port(0x31)
 
+try: 
 # TESTING COMMANDS WITHOUT PARAMETERS/RESPONSE
-for cmd in initial_commands:
-    print(f"Data transmitted from master via i2c: {cmd}")
-    port.write(cmd)
-    sleep(10)
+    for cmd in initial_commands:
+        print(f"Data transmitted from master via i2c: {cmd}")
+        port.write(cmd)
+        sleep(10)
 
 # TESTING COMMANDS WITHOUT RESPONSE, BUT WITH PARAMETERS
-for cmd in deploy_commands:
-    print(f"Data transmitted from master via i2c: {cmd}")
-    port.write(cmd, relax=False)
-    port.write(cmd)
-    sleep(10)
+    for cmd in deploy_commands:
+        print(f"Data transmitted from master via i2c: {cmd}")
+        port.write(cmd, relax=False)
+        port.write(cmd)
+        sleep(10)
 
 # TESTING COMMANDS WITHOUT PARAMETERS, BUT WITH 1 BYTE RESPONSE
-for idx, cmd in enumerate(report_1b_commands):
-    rx = port.exchange(cmd)
-    print(f"{responses_1b[idx]}, actual response is {rx}")
-    sleep(10)
+    for idx, cmd in enumerate(report_1b_commands):
+        rx = port.exchange(cmd)
+        print(f"{responses_1b[idx]}, actual response is {rx}")
+        sleep(10)
 
 # TESTING COMMANDS WITHOUT PARAMETERS, BUT WITH 2 BYTE RESPONSE
-for idx, cmd in enumerate(report_2b_commands):
-    port.write(cmd)
-    rx = port.read(2)
-    print(f"{responses_2b[idx]}, actual response is {rx}")
-    sleep(10)
+    for idx, cmd in enumerate(report_2b_commands):
+        port.write(cmd)
+        rx = port.read(2)
+        print(f"{responses_2b[idx]}, actual response is {rx}")
+        sleep(10)
+
+except: 
+    print("Something went wrong in communication")
+    ctrl.terminate()

@@ -1,5 +1,8 @@
+import pyftdi as ftdi
 from pyftdi import i2c
 from time import sleep
+
+from pyftdi import ftdi
 
 commands: list[bytes] = [
     b"\xAA",
@@ -35,8 +38,12 @@ port = ctrl.get_port(0x31)
 
 print("Echo...")
 
-for cmd in commands:
-    print(f"Data transmitted from master via i2c: {cmd}")
-    rx: bytes = port.exchange(cmd, 1)
-    print(f"Data received from slave via i2c: {rx}")
-    sleep(1)
+try:
+    for cmd in commands:
+        print(f"Data transmitted from master via i2c: {cmd}")
+        rx: bytes = port.exchange(cmd, 1)
+        print(f"Data received from slave via i2c: {rx}")
+        sleep(1)
+except: 
+    print("Something went wrong in communication")
+    ctrl.terminate()
